@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns="http://java.sun.com/xml/ns/javaee"  
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"  
+    version="3.0">  
+    <display-name>Archetype Created Web Application</display-name>  
+    <!-- Spring和mybatis的配置文件 -->  
+    <context-param>  
+        <param-name>contextConfigLocation</param-name>  
+        <param-value>classpath:spring-mybatis.xml</param-value>  
+    </context-param>  
+    <!-- 编码过滤器 -->  
+    <filter>  
+        <filter-name>encodingFilter</filter-name>  
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+        <async-supported>true</async-supported>  
+        <init-param>  
+            <param-name>encoding</param-name>  
+            <param-value>UTF-8</param-value>  
+        </init-param>  
+    </filter>  
+    <filter-mapping>  
+        <filter-name>encodingFilter</filter-name>  
+        <url-pattern>/*</url-pattern>  
+    </filter-mapping>  
+    <!-- Spring监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+    </listener>  
+    <!-- 防止Spring内存溢出监听器 -->  
+    <listener>  
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>  
+    </listener>  
+    
+    
+      
+    <!-- Spring MVC servlet -->  
+    <servlet>  
+        <servlet-name>SpringMVC</servlet-name>  
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>  
+        <init-param>  
+            <param-name>contextConfigLocation</param-name>  
+            <param-value>classpath:spring-mvc.xml</param-value>  
+        </init-param>  
+        <load-on-startup>1</load-on-startup>  
+        <async-supported>true</async-supported>  
+    </servlet>  
+    <servlet-mapping>  
+        <servlet-name>SpringMVC</servlet-name>  
+        <!-- 此处可以可以配置成*.do，对应struts的后缀习惯 -->  
+        <url-pattern>/</url-pattern>  
+    </servlet-mapping>
+    
+    <!-- DWR servlet -->
+    <servlet> 
+    <servlet-name>dwr-invoker</servlet-name> 
+    <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class> 
+<!-- 想查看DWR自动生成的测试页（Using debug/test mode）,这个参数debug默认是false.如果选择true.
+我们可以通过url http://localhost:port/app/dwr来查看你部署的每个DWR class。
+并且可以测试java代码的每个方法是否运行正常。 为了安全考虑，在正式环境下你一定把这个参数设为false. -->
+<init-param> 
+    <param-name>debug</param-name> 
+    <param-value>true</param-value> 
+</init-param> 
+<!-- 加入了跨域调用功能.这个参数是在dwr版本2.0才有的. 默认值为true,也就是禁止其他域发送请求. 
+否则在跨站调用时会报 org.directwebremoting.util.CommonsLoggingOutput error
+   严重: A request has been denied as a potential CSRF attack的错误信息
+   请求被拒绝因为可能存在csrf(cross-site request forgeries,跨站请求伪造)攻击.
+也就是说页面URL可能被跨站了的服务所调用.
+例如:自己页面的一个图片.可能被其他站直接通过[img]....[/img]来引用. 
+   -->
+<init-param>   
+    <param-name>crossDomainSessionSecurity</param-name>   
+     <param-value>false</param-value>   
+</init-param>
+</servlet> 
+
+<servlet-mapping>     
+<servlet-name>dwr-invoker</servlet-name> 
+<url-pattern>/dwr/*</url-pattern> 
+</servlet-mapping> 
+  
+    <welcome-file-list>  
+        <welcome-file>/index.jsp</welcome-file>  
+    </welcome-file-list>  
+  
+</web-app>  
